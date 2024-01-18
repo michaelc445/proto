@@ -5,6 +5,7 @@ syntax = "proto3";
 package PosterProto;
 
 import "google/protobuf/timestamp.proto";
+option go_package = "github.com/michaelc445/proto";
 
 enum ResponseCode {
     OK = 0;
