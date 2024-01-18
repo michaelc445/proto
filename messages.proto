@@ -1,0 +1,75 @@
+
+
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+enum ResponseCode {
+    OK = 0;
+
+}
+message Location{
+    double lat = 1;
+    double lng = 2;
+}
+message Poster {
+    string placedBy = 1;
+    string party = 2;
+    int32 posterid = 3;
+    Location location = 4;
+}
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+}
+message LoginResponse{
+    string authKey = 1;
+    ResponseCode code = 2;
+    string party = 3;
+    int32 userId = 4;
+    int32 partyId = 5;
+}
+message PlacementRequest {
+    int32 userId = 1;
+    string authKey = 2;
+    string party = 3;
+    Location location = 4;
+}
+message PlacementResponse {
+    ResponseCode code = 1;
+    int32 posterId = 2;
+}
+message RemovePosterRequest {
+    int32 userId = 1;
+    string authKey = 2;
+    int32 posterId = 3;
+    int32 partyId = 4;
+}
+message RemovePosterResponse {
+    ResponseCode code = 1;
+}
+message UpdateRequest {
+    string authKey = 1;
+    int32 userId = 2;
+    int32 partyid = 3;
+    google.protobuf.Timestamp lastUpdated = 4;
+}
+message UpdateResponse {
+    ResponseCode code = 1;
+    repeated Poster posters = 2;
+}
+message RegisterAccountRequest {
+    string username = 1;
+    string password = 2;
+    string firstName = 3;
+    string lastName = 4;
+}
+message RegisterAccountResponse{
+    ResponseCode code = 1;
+}
+
+service PosterApp {
+
+    rpc PlacePoster (PlacementRequest) returns (PlacementResponse){}
+    rpc RemovePoster (RemovePosterRequest) returns (RemovePosterResponse){}
+}
