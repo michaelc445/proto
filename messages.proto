@@ -10,6 +10,7 @@ option go_package = "github.com/michaelc445/proto;proto";
 
 enum ResponseCode {
     OK = 0;
+    FAILED = 1;
 
 }
 message Location{
