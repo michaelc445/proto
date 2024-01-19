@@ -37,7 +37,7 @@ message LoginResponse{
 message PlacementRequest {
     int32 userId = 1;
     string authKey = 2;
-    string party = 3;
+    int32 partyId = 3;
     Location location = 4;
 }
 message PlacementResponse {
