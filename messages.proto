@@ -11,22 +11,25 @@ option go_package = "github.com/michaelc445/proto;proto";
 enum ResponseCode {
     OK = 0;
     FAILED = 1;
-
 }
+
 message Location{
     double lat = 1;
     double lng = 2;
 }
+
 message Poster {
     string placedBy = 1;
     string party = 2;
     int32 posterid = 3;
     Location location = 4;
 }
+
 message LoginRequest {
     string username = 1;
     string password = 2;
 }
+
 message LoginResponse{
     string authKey = 1;
     ResponseCode code = 2;
@@ -34,47 +37,111 @@ message LoginResponse{
     int32 userId = 4;
     int32 partyId = 5;
 }
+
 message PlacementRequest {
     int32 userId = 1;
     string authKey = 2;
     int32 partyId = 3;
     Location location = 4;
 }
+
 message PlacementResponse {
     ResponseCode code = 1;
     int32 posterId = 2;
 }
+
 message RemovePosterRequest {
     int32 userId = 1;
     string authKey = 2;
     int32 posterId = 3;
     int32 partyId = 4;
 }
+
 message RemovePosterResponse {
     ResponseCode code = 1;
 }
+
 message UpdateRequest {
     string authKey = 1;
     int32 userId = 2;
     int32 partyid = 3;
     google.protobuf.Timestamp lastUpdated = 4;
 }
+
 message UpdateResponse {
     ResponseCode code = 1;
     repeated Poster posters = 2;
 }
+
 message RegisterAccountRequest {
     string username = 1;
     string password = 2;
     string firstName = 3;
     string lastName = 4;
 }
+
 message RegisterAccountResponse{
     ResponseCode code = 1;
 }
 
-service PosterApp {
+message RegisterPartyRequest{
+    string partyName = 1;
+    string authKey = 2;
+    int32 userId = 3;
+}
 
+message RegisterPartyResponse{
+    ResponseCode code = 1;
+    int32 partyId = 2;
+}
+
+message JoinPartyRequest{
+    int32 userId = 1;
+    string authKey = 2;
+    int32 partyId = 3;
+}
+
+message JoinPartyResponse{
+    ResponseCode code = 1;
+}
+
+message RetrieveJoinRequest{
+    int32 userId = 1;
+    string authKey = 2;
+    int32 partyId = 3;
+}
+
+message RetrieveJoinResponse{
+    repeated Member members = 1;
+    ResponseCode code = 2;
+}
+
+message Member {
+    int32 userId = 1;
+    string firstName = 2;
+    string lastName = 3;
+}
+
+message ApproveMemberRequest{
+    string authKey = 1;
+    repeated Member approvedMembers = 2;
+    repeated Member deniedMembers = 3;
+    int32 userId = 4;
+    int32 partyId = 5;
+}
+
+message ApproveMemberResponse{
+    ResponseCode code = 1;
+}
+
+service PosterApp {
     rpc PlacePoster (PlacementRequest) returns (PlacementResponse){}
     rpc RemovePoster (RemovePosterRequest) returns (RemovePosterResponse){}
+    rpc RegisterAccount (RegisterAccountRequest) returns (RegisterAccountResponse){}
+    rpc LoginAccount(LoginRequest)returns (LoginResponse){}
+    rpc RegisterParty (RegisterPartyRequest) returns (RegisterPartyResponse){}
+    rpc JoinParty(JoinPartyRequest) returns (JoinPartyResponse){}
+    rpc RetrieveJoinRequests (RetrieveJoinRequest) returns (RetrieveJoinResponse){}
+    rpc RetrieveUpdates(UpdateRequest) returns (UpdateResponse){}
+    rpc ApproveMembers(ApproveMemberRequest) returns (ApproveMemberResponse){}
 }
