@@ -59,6 +59,7 @@ message RemovePosterRequest {
 
 message RemovePosterResponse {
     ResponseCode code = 1;
+    int32 posterid = 2;
 }
 
 message UpdateRequest {
