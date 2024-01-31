@@ -53,7 +53,7 @@ message PlacementResponse {
 message RemovePosterRequest {
     int32 userId = 1;
     string authKey = 2;
-    int32 posterId = 3;
+    Location location = 3;
     int32 partyId = 4;
 }
 
