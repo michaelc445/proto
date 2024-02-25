@@ -19,8 +19,8 @@ message Location{
 }
 
 message Poster {
-    string placedBy = 1;
-    string party = 2;
+    int32 placedBy = 1;
+    int32 party = 2;
     int32 posterid = 3;
     Location location = 4;
 }
