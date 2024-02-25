@@ -23,6 +23,7 @@ message Poster {
     int32 party = 2;
     int32 posterid = 3;
     Location location = 4;
+    bool removed = 5;
 }
 
 message LoginRequest {
