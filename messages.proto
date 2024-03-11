@@ -95,6 +95,7 @@ message RegisterPartyRequest{
 message RegisterPartyResponse{
     ResponseCode code = 1;
     int32 partyId = 2;
+    string authKey = 3;
 }
 
 message JoinPartyRequest{
