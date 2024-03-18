@@ -137,6 +137,20 @@ message ApproveMemberResponse{
     ResponseCode code = 1;
 }
 
+message RetrievePartiesRequest{
+    string authKey = 1;
+}
+
+message RetrievePartiesResponse{
+    repeated Party parties = 1;
+    ResponseCode code = 2;
+}
+
+message Party{
+    string name = 1;
+    int32 partyID = 2;
+}
+
 service PosterApp {
     rpc PlacePoster (PlacementRequest) returns (PlacementResponse){}
     rpc RemovePoster (RemovePosterRequest) returns (RemovePosterResponse){}
@@ -147,4 +161,5 @@ service PosterApp {
     rpc RetrieveJoinRequests (RetrieveJoinRequest) returns (RetrieveJoinResponse){}
     rpc RetrieveUpdates(UpdateRequest) returns (UpdateResponse){}
     rpc ApproveMembers(ApproveMemberRequest) returns (ApproveMemberResponse){}
+    rpc RetrieveParties(RetrievePartiesRequest) returns (RetrievePartiesResponse){}
 }
