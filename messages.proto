@@ -133,6 +133,7 @@ message ProfileRequest{
 message ProfileResponse{
     int32 placedPosters = 1;
     int32 removedPosters = 2;
+    string partyName = 3;
 }
 
 message ApproveMemberRequest{
