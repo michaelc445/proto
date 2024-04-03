@@ -162,7 +162,21 @@ message Party{
     string name = 1;
     int32 partyID = 2;
 }
-
+// each party will only have 1 election active at any time
+// elections are all held on the same day
+// let parties create their own elections rather than site admin managing when elections happen
+message CreateElectionRequest{
+    string authKey = 1;
+    int32 partyId = 2;
+    int32 userId = 3;
+    // day voting happens. posters must be removed 7 days after this date
+    google.protobuf.Timestamp electionDate = 5;
+    // day posters are legally allowed to be placed from
+    google.protobuf.Timestamp startDate = 6;
+}
+message CreateElectionResponse{
+    ResponseCode code = 1;
+}
 service PosterApp {
     rpc PlacePoster (PlacementRequest) returns (PlacementResponse){}
     rpc RemovePoster (RemovePosterRequest) returns (RemovePosterResponse){}
@@ -175,4 +189,5 @@ service PosterApp {
     rpc ApproveMembers(ApproveMemberRequest) returns (ApproveMemberResponse){}
     rpc RetrieveParties(RetrievePartiesRequest) returns (RetrievePartiesResponse){}
     rpc RetrieveProfileStats(ProfileRequest) returns (ProfileResponse){}
+    rpc NewElection(CreateElectionRequest) returns (CreateElectionResponse){}
 }
