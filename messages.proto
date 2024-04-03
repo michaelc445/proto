@@ -124,6 +124,16 @@ message Member {
     string firstName = 2;
     string lastName = 3;
 }
+message ProfileRequest{
+    string authKey = 1;
+    int32 userId = 2;
+    int32 partyId = 3;
+}
+
+message ProfileResponse{
+    int32 placedPosters = 1;
+    int32 removedPosters = 2;
+}
 
 message ApproveMemberRequest{
     string authKey = 1;
@@ -162,4 +172,5 @@ service PosterApp {
     rpc RetrieveUpdates(UpdateRequest) returns (UpdateResponse){}
     rpc ApproveMembers(ApproveMemberRequest) returns (ApproveMemberResponse){}
     rpc RetrieveParties(RetrievePartiesRequest) returns (RetrievePartiesResponse){}
+    rpc RetrieveProfileStats(ProfileRequest) returns (ProfileResponse){}
 }
