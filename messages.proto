@@ -22,6 +22,7 @@ message Location{
     double lng = 2;
 }
 
+
 message Poster {
     int32 placedBy = 1;
     int32 party = 2;
