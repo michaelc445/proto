@@ -8,6 +8,10 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/michaelc445/proto;proto";
 
+option java_multiple_files = true;
+option java_package = "com.michaelc445.messages";
+option java_outer_classname = "MessagesProto";
+
 enum ResponseCode {
     OK = 0;
     FAILED = 1;
@@ -19,10 +23,11 @@ message Location{
 }
 
 message Poster {
-    string placedBy = 1;
-    string party = 2;
+    int32 placedBy = 1;
+    int32 party = 2;
     int32 posterid = 3;
     Location location = 4;
+    bool removed = 5;
 }
 
 message LoginRequest {
@@ -94,6 +99,7 @@ message RegisterPartyRequest{
 message RegisterPartyResponse{
     ResponseCode code = 1;
     int32 partyId = 2;
+    string authKey = 3;
 }
 
 message JoinPartyRequest{
@@ -122,6 +128,18 @@ message Member {
     string firstName = 2;
     string lastName = 3;
 }
+message ProfileRequest{
+    string authKey = 1;
+    int32 userId = 2;
+    int32 partyId = 3;
+}
+
+message ProfileResponse{
+    int32 placedPosters = 1;
+    int32 removedPosters = 2;
+    string partyName = 3;
+    ResponseCode code = 4;
+}
 
 message ApproveMemberRequest{
     string authKey = 1;
@@ -135,6 +153,35 @@ message ApproveMemberResponse{
     ResponseCode code = 1;
 }
 
+message RetrievePartiesRequest{
+    string authKey = 1;
+}
+
+message RetrievePartiesResponse{
+    repeated Party parties = 1;
+    ResponseCode code = 2;
+}
+
+message Party{
+    string name = 1;
+    int32 partyID = 2;
+}
+// each party will only have 1 election active at any time
+// elections are all held on the same day
+// let parties create their own elections rather than site admin managing when elections happen
+message CreateElectionRequest{
+    string authKey = 1;
+    int32 partyId = 2;
+    int32 userId = 3;
+    // day voting happens. posters must be removed 7 days after this date
+    google.protobuf.Timestamp electionDate = 5;
+    // day posters are legally allowed to be placed from
+    google.protobuf.Timestamp startDate = 6;
+}
+
+message CreateElectionResponse{
+    ResponseCode code = 1;
+}
 service PosterApp {
     rpc PlacePoster (PlacementRequest) returns (PlacementResponse){}
     rpc RemovePoster (RemovePosterRequest) returns (RemovePosterResponse){}
@@ -145,4 +192,7 @@ service PosterApp {
     rpc RetrieveJoinRequests (RetrieveJoinRequest) returns (RetrieveJoinResponse){}
     rpc RetrieveUpdates(UpdateRequest) returns (UpdateResponse){}
     rpc ApproveMembers(ApproveMemberRequest) returns (ApproveMemberResponse){}
+    rpc RetrieveParties(RetrievePartiesRequest) returns (RetrievePartiesResponse){}
+    rpc RetrieveProfileStats(ProfileRequest) returns (ProfileResponse){}
+    rpc NewElection(CreateElectionRequest) returns (CreateElectionResponse){}
 }
