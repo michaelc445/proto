@@ -178,10 +178,29 @@ message CreateElectionRequest{
     // day posters are legally allowed to be placed from
     google.protobuf.Timestamp startDate = 6;
 }
-
 message CreateElectionResponse{
     ResponseCode code = 1;
 }
+
+message PosterTimeRequest{
+    string authKey = 1;
+    int32 userId = 2;
+    int32 partyId = 3;
+}
+message PosterTimeResponse{
+    ResponseCode code = 1;
+    repeated PosterUser posters = 2;
+    google.protobuf.Timestamp removalDate = 3;
+}
+
+message PosterUser{
+    Poster poster = 1;
+    string username =2;
+    string firstName = 3;
+    string lastName = 4;
+    google.protobuf.Timestamp created = 5;
+}
+
 service PosterApp {
     rpc PlacePoster (PlacementRequest) returns (PlacementResponse){}
     rpc RemovePoster (RemovePosterRequest) returns (RemovePosterResponse){}
@@ -195,4 +214,5 @@ service PosterApp {
     rpc RetrieveParties(RetrievePartiesRequest) returns (RetrievePartiesResponse){}
     rpc RetrieveProfileStats(ProfileRequest) returns (ProfileResponse){}
     rpc NewElection(CreateElectionRequest) returns (CreateElectionResponse){}
+    rpc OutstandingPosters(PosterTimeRequest) returns (PosterTimeResponse){}
 }
